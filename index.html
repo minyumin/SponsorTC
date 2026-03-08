@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黑菲特家族台中場</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --red-bright: #e05040;
+    --red-light: #e8604e;
+    --red-dark: #a02a1c;
+    --orange: #d4692a;
+    --bg: #fdf6f2;
+    --bg2: #faeee8;
+    --surface: #ffffff;
+    --surface2: #fdf0eb;
+    --border: #f0d5cc;
+    --text: #2c1810;
+    --text-mid: #6b3a2e;
+    --text-muted: #b07060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 40% at 50% 0%, rgba(224,80,64,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 90% 90%, rgba(212,105,42,0.06) 0%, transparent 55%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container { position: relative; z-index: 1; width: 100%; max-width: 540px; }
+
+  /* ── Header ── */
+  header { text-align: center; margin-bottom: 36px; }
+
+  .eyebrow {
+    font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--red-light); margin-bottom: 8px;
+    opacity: 0; animation: fadeUp 0.5s 0.4s ease forwards;
+  }
+  h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.9rem,7vw,2.8rem); font-weight: 900; line-height: 1.2;
+    color: var(--text);
+    opacity: 0; animation: fadeUp 0.5s 0.5s ease forwards;
+  }
+  h1 em { color: var(--red-bright); font-style: normal; }
+
+  /* ── Total card ── */
+  .total-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px; padding: 30px 28px 26px;
+    text-align: center; margin-bottom: 18px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 2px 16px rgba(192,57,43,0.08);
+    opacity: 0; animation: fadeUp 0.5s 0.7s ease forwards;
+  }
+  .total-card::before {
+    content: ''; position: absolute; top:0; left:0; right:0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--red-bright), var(--orange), transparent);
+  }
+
+  .total-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+
+  .total-amount {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(3rem,11vw,5rem); font-weight: 900;
+    color: var(--red-bright); line-height: 1;
+  }
+  .total-amount.bump { animation: bump 0.4s ease; }
+  .currency { font-size: 0.38em; vertical-align: super; color: var(--red-light); font-weight: 400; }
+
+  .donor-count { margin-top: 10px; font-size: 13px; color: var(--text-muted); }
+  .donor-count b { color: var(--red-light); }
+
+  /* ── Input card ── */
+  .input-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 22px; padding: 24px 22px; margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(192,57,43,0.06);
+    opacity: 0; animation: fadeUp 0.5s 0.8s ease forwards;
+    position: relative;
+  }
+  .section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+
+  .row { display: flex; gap: 12px; margin-bottom: 14px; }
+  .field { flex: 1; display: flex; flex-direction: column; gap: 6px; position: relative; }
+  label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+
+  input, select {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif; font-size: 15px;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+    -webkit-appearance: none; appearance: none;
+  }
+  input:focus, select:focus {
+    border-color: var(--red-bright);
+    box-shadow: 0 0 0 3px rgba(224,80,64,0.12);
+  }
+  input::placeholder { color: var(--text-muted); }
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  select {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif; font-size: 15px;
+    outline: none; width: 100%; cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  select:focus {
+    border-color: var(--red-bright);
+    box-shadow: 0 0 0 3px rgba(224,80,64,0.12);
+  }
+
+  .submit-btn {
+    width: 100%; padding: 15px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--red-dark), var(--red-bright) 60%, var(--orange));
+    color: #fff; font-family: 'Noto Sans TC', sans-serif;
+    font-size: 15px; font-weight: 500; letter-spacing: 1px; cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.25);
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(192,57,43,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex; gap: 0; margin-bottom: 16px;
+    background: var(--surface2); border-radius: 12px; padding: 4px;
+    border: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 0.5s 0.9s ease forwards;
+  }
+  .tab-btn {
+    flex: 1; padding: 9px; background: transparent; border: none;
+    border-radius: 9px; font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; color: var(--text-muted); cursor: pointer;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .tab-btn.active {
+    background: var(--surface); color: var(--red-bright);
+    box-shadow: 0 1px 6px rgba(192,57,43,0.12);
+  }
+
+  /* ── Feed (each transaction) ── */
+  .panel { display: none; }
+  .panel.active { display: flex; flex-direction: column; gap: 10px; }
+
+  .feed-item {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    animation: slideIn 0.35s ease;
+    box-shadow: 0 1px 6px rgba(192,57,43,0.05);
+  }
+
+  .feed-left { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; flex-shrink: 0;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .feed-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .feed-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .feed-amt { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; color: var(--red-bright); }
+
+  /* ── Donor summary ── */
+  .donor-item {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 16px 12px;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 1px 6px rgba(192,57,43,0.05);
+    animation: slideIn 0.35s ease;
+  }
+  .donor-top { display: flex; align-items: center; justify-content: space-between; }
+  .donor-left { display: flex; align-items: center; gap: 12px; }
+  .donor-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .donor-times { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .donor-right { text-align: right; }
+  .donor-total { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; color: var(--red-bright); }
+  .donor-pct { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Donor detail expand */
+  .donor-detail {
+    display: none; margin-top: 10px;
+    border-top: 1px solid var(--border); padding-top: 10px;
+    flex-direction: column; gap: 6px;
+  }
+  .donor-detail.open { display: flex; }
+  .donor-detail-item {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; padding: 6px 4px;
+    border-bottom: 1px solid var(--bg2);
+    color: var(--text-mid);
+  }
+  .donor-detail-item:last-child { border-bottom: none; }
+  .donor-detail-time { color: var(--text-muted); font-size: 11px; }
+  .donor-detail-amt { font-weight: 600; color: var(--red-bright); font-size: 13px; }
+
+  .expand-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 11px; color: var(--text-muted); padding: 0;
+    display: flex; align-items: center; gap: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: color 0.15s;
+  }
+  .expand-btn:hover { color: var(--red-bright); }
+  .expand-arrow { transition: transform 0.2s; display: inline-block; }
+  .expand-btn.open .expand-arrow { transform: rotate(180deg); }
+  .bar-wrap { width: 100%; height: 6px; background: var(--bg2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill {
+    height: 100%; border-radius: 99px;
+    width: 0%;
+    transition: width 0.9s cubic-bezier(0.34,1.1,0.64,1);
+  }
+
+  .empty { text-align: center; padding: 36px 0; color: var(--text-muted); font-size: 14px; line-height: 2.2; }
+
+  .live-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+    opacity: 0; animation: fadeUp 0.5s 0.85s ease forwards;
+  }
+  .feed-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+  .live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #16a34a; letter-spacing: 1px; }
+  .live::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #16a34a; box-shadow: 0 0 6px #16a34a; animation: blink 2s infinite;
+  }
+
+  /* Status */
+  .status {
+    margin-top: 18px; padding: 11px 16px; border-radius: 10px;
+    font-size: 12px; text-align: center; line-height: 1.6;
+    background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.2);
+    color: #16a34a; opacity: 0; animation: fadeUp 0.5s 1.1s ease forwards;
+  }
+  .status.error { background: rgba(224,80,64,0.06); border-color: rgba(224,80,64,0.2); color: var(--red-bright); }
+  .status.loading { background: var(--surface2); border-color: var(--border); color: var(--text-muted); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--text); color: #fff;
+    padding: 12px 22px; border-radius: 99px;
+    font-size: 14px; font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+    opacity: 0; z-index: 999; white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity:0; transform:translateX(-8px); }
+    to   { opacity:1; transform:translateX(0); }
+  }
+  @keyframes bump {
+    0%  { transform:scale(1); }
+    40% { transform:scale(1.08); }
+    100%{ transform:scale(1); }
+  }
+  @keyframes blink {
+    0%,100%{ opacity:1; } 50%{ opacity:0.2; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <p class="eyebrow">集資贊助計畫</p>
+    <h1>黑菲特家族<em>台中場</em></h1>
+  </header>
+
+  <!-- 累計金額 -->
+  <div class="total-card">
+    <div class="total-label">累計贊助金額</div>
+    <div class="total-amount" id="totalEl">
+      <span class="currency">NT$</span><span id="amountNum">0</span>
+    </div>
+    <div class="donor-count">共 <b id="donorCount">0</b> 位贊助者加入</div>
+  </div>
+
+  <!-- 輸入 -->
+  <div class="input-card">
+    <div class="section-label">加入贊助</div>
+    <div class="row" style="margin-bottom: 14px;">
+      <div class="field">
+        <label>你的名字</label>
+        <select id="nameSelect" onchange="onSelectName()">
+          <option value="">── 請選擇 ──</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>請打群裡的名字</label>
+        <input type="text" id="nameInput" placeholder="黑菲特家族群名字" maxlength="20" autocomplete="off">
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 14px;">
+      <div class="field">
+        <label>金額（NT$）</label>
+        <input type="number" id="amountInput" placeholder="輸入金額" min="1">
+      </div>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="addDonation()">💰 贊助</button>
+  </div>
+
+  <!-- 紀錄分頁 -->
+  <div class="live-row">
+    <span class="feed-label">贊助紀錄</span>
+    <span class="live">LIVE</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-log" onclick="switchTab('log')">📋 每筆紀錄</button>
+    <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">👤 個人累計</button>
+  </div>
+
+  <!-- 每筆紀錄 -->
+  <div class="panel active" id="panel-log">
+    <div class="empty">⏳ 連線中...</div>
+  </div>
+
+  <!-- 個人累計 -->
+  <div class="panel" id="panel-summary">
+    <div class="empty">⏳ 連線中...</div>
+  </div>
+
+  <div class="status loading" id="status">🔌 正在連接 Firebase 即時資料庫...</div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, push, onValue, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ⚠️ 請替換為你的新 Firebase 專案設定
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const COLORS = [
+    ['#fde8e4','#c0392b'], ['#fef0e4','#c0700a'], ['#e4f5f0','#1a7a6e'],
+    ['#ede4f5','#6b2fad'], ['#e4eef5','#1a5fad'], ['#f5f0e4','#8a6a0a'],
+  ];
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const donationsRef = ref(db, 'donations');
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  let prevTotal = 0;
+  let allDonors = [];
+
+  // 即時監聽
+  onValue(donationsRef, (snapshot) => {
+    const data = snapshot.val();
+    const donations = data
+      ? Object.entries(data)
+          .map(([id, d]) => ({ id, ...d }))
+          .sort((a, b) => b.timestamp - a.timestamp)
+      : [];
+
+    const total = donations.reduce((s, d) => s + d.amount, 0);
+
+    // 個人累計
+    const summaryMap = {};
+    donations.forEach(d => {
+      if (!summaryMap[d.name]) summaryMap[d.name] = { total: 0, count: 0 };
+      summaryMap[d.name].total += d.amount;
+      summaryMap[d.name].count += 1;
+    });
+    const summary = Object.entries(summaryMap)
+      .map(([name, v]) => ({ name, ...v }))
+      .sort((a, b) => b.total - a.total);
+
+    allDonors = summary.map(s => s.name);
+    updateDatalist(allDonors);
+
+    renderTotal(total, Object.keys(summaryMap).length, prevTotal);
+    renderLog(donations);
+    renderSummary(summary, donations, total);
+    prevTotal = total;
+
+    document.getElementById('status').className = 'status';
+    document.getElementById('status').textContent = '✅ 已連接 Firebase，資料即時同步中';
+  }, (error) => {
+    document.getElementById('status').className = 'status error';
+    document.getElementById('status').textContent = '❌ 連線失敗：' + error.message;
+  });
+
+  // 送出贊助
+  window.addDonation = async function() {
+    const name = document.getElementById('nameInput').value.trim();
+    const amount = parseInt(document.getElementById('amountInput').value);
+    if (!name)             { shake('nameInput');   return; }
+    if (!amount || amount < 1) { shake('amountInput'); return; }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '送出中...';
+
+    try {
+      await push(donationsRef, { name, amount, timestamp: serverTimestamp() });
+      document.getElementById('nameInput').value = '';
+      document.getElementById('amountInput').value = '';
+      document.getElementById('nameSelect').value = '';
+      document.getElementById('nameInput').focus();
+      showToast('✅ 贊助成功，感謝你的支持！');
+    } catch (e) {
+      alert('送出失敗：' + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '💰 贊助';
+    }
+  };
+
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+  };
+
+  function updateDatalist(donors) {
+    const sel = document.getElementById('nameSelect');
+    const current = sel.value;
+    sel.innerHTML = '<option value="">── 選擇曾贊助的名字 ──</option>';
+    donors.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  }
+
+  window.onSelectName = function() {
+    const sel = document.getElementById('nameSelect');
+    if (sel.value) {
+      document.getElementById('nameInput').value = sel.value;
+      document.getElementById('amountInput').focus();
+    }
+  };
+
+  document.getElementById('amountInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.addDonation();
+  });
+
+  // ── Render functions ──
+
+  function renderTotal(total, uniqueDonors, prev) {
+    const numEl = document.getElementById('amountNum');
+    const start = prev;
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - t0) / 700, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      numEl.textContent = Math.round(start + (total - start) * e).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+
+    if (total !== prev) {
+      const el = document.getElementById('totalEl');
+      el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+    }
+
+    document.getElementById('donorCount').textContent = uniqueDonors;
+  }
+
+  function renderLog(donations) {
+    const panel = document.getElementById('panel-log');
+    panel.innerHTML = '';
+
+    if (!donations.length) {
+      panel.innerHTML = '<div class="empty">💰 還沒有人贊助<br>成為第一位贊助者吧！</div>';
+      return;
+    }
+
+    donations.forEach((d) => {
+      const c = COLORS[(d.name || '?').charCodeAt(0) % COLORS.length];
+      const time = d.timestamp
+        ? new Date(d.timestamp).toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+        : '--';
+      const el = document.createElement('div');
+      el.className = 'feed-item';
+      el.innerHTML = `
+        <div class="feed-left">
+          <div class="avatar" style="background:${c[0]};color:${c[1]}">${esc(d.name[0])}</div>
+          <div>
+            <div class="feed-name">${esc(d.name)}</div>
+            <div class="feed-time">${time}</div>
+          </div>
+        </div>
+        <div class="feed-amt">NT$ ${Number(d.amount).toLocaleString()}</div>
+      `;
+      panel.appendChild(el);
+    });
+  }
+
+  function renderSummary(summary, allDonations, grandTotal) {
+    const panel = document.getElementById('panel-summary');
+    panel.innerHTML = '';
+
+    if (!summary.length) {
+      panel.innerHTML = '<div class="empty">💰 還沒有贊助紀錄</div>';
+      return;
+    }
+
+    const barColors = ['#e05040','#d4692a','#c08020','#2a8060','#4060c0','#8040a0'];
+
+    const detailMap = {};
+    allDonations.forEach(d => {
+      if (!detailMap[d.name]) detailMap[d.name] = [];
+      detailMap[d.name].push(d);
+    });
+
+    summary.forEach((s, i) => {
+      const c = COLORS[s.name.charCodeAt(0) % COLORS.length];
+      const pct = grandTotal > 0 ? (s.total / grandTotal * 100).toFixed(1) : 0;
+      const barPct = grandTotal > 0 ? Math.min(s.total / grandTotal * 100, 100) : 0;
+      const barColor = barColors[i % barColors.length];
+      const details = (detailMap[s.name] || []).sort((a,b) => b.timestamp - a.timestamp);
+
+      const detailRows = details.map(d => {
+        const time = d.timestamp
+          ? new Date(d.timestamp).toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+          : '--';
+        return `
+          <div class="donor-detail-item">
+            <span class="donor-detail-time">${time}</span>
+            <span class="donor-detail-amt">NT$ ${Number(d.amount).toLocaleString()}</span>
+          </div>`;
+      }).join('');
+
+      const el = document.createElement('div');
+      el.className = 'donor-item';
+      el.innerHTML = `
+        <div class="donor-top">
+          <div class="donor-left">
+            <div class="avatar" style="background:${c[0]};color:${c[1]}">${esc(s.name[0])}</div>
+            <div>
+              <div class="donor-name">${esc(s.name)}</div>
+              <button class="expand-btn" id="btn-${i}" onclick="toggleDetail(${i})">
+                共贊助 ${s.count} 次 <span class="expand-arrow">▼</span>
+              </button>
+            </div>
+          </div>
+          <div class="donor-right">
+            <div class="donor-total">NT$ ${s.total.toLocaleString()}</div>
+            <div class="donor-pct">占總額 ${pct}%</div>
+          </div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-fill" style="background:${barColor}" data-width="${barPct}"></div>
+        </div>
+        <div class="donor-detail" id="detail-${i}">
+          ${detailRows}
+        </div>
+      `;
+      panel.appendChild(el);
+    });
+
+    requestAnimationFrame(() => {
+      panel.querySelectorAll('.bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+    });
+  }
+
+  window.toggleDetail = function(i) {
+    const detail = document.getElementById('detail-' + i);
+    const btn = document.getElementById('btn-' + i);
+    const isOpen = detail.classList.contains('open');
+    detail.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+  };
+
+  function shake(id) {
+    const el = document.getElementById(id);
+    el.style.borderColor = '#e74c3c';
+    el.style.boxShadow = '0 0 0 3px rgba(224,80,64,0.2)';
+    setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 800);
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
