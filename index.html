@@ -4,35 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>黑菲特家族台中場</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #c0392b;
-    --red-bright: #e05040;
-    --red-light: #e8604e;
-    --red-dark: #a02a1c;
-    --orange: #d4692a;
-    --bg: #fdf6f2;
-    --bg2: #faeee8;
-    --surface: #ffffff;
-    --surface2: #fdf0eb;
-    --border: #f0d5cc;
-    --text: #2c1810;
-    --text-mid: #6b3a2e;
-    --text-muted: #b07060;
+    --wine:       #6b1a2e;
+    --wine-mid:   #8b2440;
+    --wine-light: #b03a5a;
+    --rose:       #c9566e;
+    --gold:       #c8a96e;
+    --gold-light: #e8c98e;
+    --cream:      #f7f0e8;
+    --cream2:     #efe5d6;
+    --parchment:  #faf5ee;
+    --bark:       #3d2314;
+    --bark-mid:   #5a3320;
+    --bark-light: #8a5a3a;
+    --text:       #1e0e08;
+    --text-mid:   #5a2a1a;
+    --text-muted: #9a6a50;
+    --border:     #d4b896;
+    --border-light: #e8d4be;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Noto Sans TC', sans-serif;
-    background: var(--bg);
+    background: var(--parchment);
     color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 48px 20px 80px;
+    padding: 52px 20px 90px;
     overflow-x: hidden;
   }
 
@@ -40,113 +44,235 @@
     content: '';
     position: fixed; inset: 0;
     background:
-      radial-gradient(ellipse 70% 40% at 50% 0%, rgba(224,80,64,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 30% at 90% 90%, rgba(212,105,42,0.06) 0%, transparent 55%);
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(107,26,46,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 100%, rgba(200,169,110,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 30% at 0% 60%, rgba(107,26,46,0.06) 0%, transparent 50%);
     pointer-events: none; z-index: 0;
   }
 
-  .container { position: relative; z-index: 1; width: 100%; max-width: 540px; }
+  body::after {
+    content: '🍷 · · · 🍇 · · · 🍷 · · · 🍇 · · · 🍷';
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--wine);
+    color: rgba(255,255,255,0.35);
+    font-size: 10px; letter-spacing: 3px;
+    padding: 6px; text-align: center;
+    z-index: 100;
+  }
+
+  .container { position: relative; z-index: 1; width: 100%; max-width: 560px; }
 
   /* ── Header ── */
-  header { text-align: center; margin-bottom: 36px; }
+  header { text-align: center; margin-bottom: 32px; padding-top: 16px; }
 
+  .wine-icon {
+    font-size: 52px; display: block; margin-bottom: 12px;
+    opacity: 0; animation: dropIn 0.8s 0.1s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    filter: drop-shadow(0 6px 16px rgba(107,26,46,0.35));
+  }
   .eyebrow {
-    font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--red-light); margin-bottom: 8px;
+    font-size: 10px; letter-spacing: 6px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
     opacity: 0; animation: fadeUp 0.5s 0.4s ease forwards;
   }
   h1 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(1.9rem,7vw,2.8rem); font-weight: 900; line-height: 1.2;
-    color: var(--text);
+    font-family: 'Playfair Display', 'Noto Serif TC', serif;
+    font-size: clamp(1.8rem, 7vw, 2.7rem);
+    font-weight: 900; line-height: 1.2;
+    color: var(--wine);
     opacity: 0; animation: fadeUp 0.5s 0.5s ease forwards;
   }
-  h1 em { color: var(--red-bright); font-style: normal; }
+  h1 em { color: var(--bark); font-style: italic; font-family: 'Playfair Display', serif; }
+  .ornament {
+    margin: 14px auto 0;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    opacity: 0; animation: fadeUp 0.5s 0.6s ease forwards;
+  }
+  .ornament-line { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+  .ornament-line.r { background: linear-gradient(90deg, var(--gold), transparent); }
+  .ornament-dot { font-size: 14px; color: var(--gold); }
+
+  /* ── Grape Growth Card ── */
+  .growth-card {
+    background: linear-gradient(160deg, #2a0d18 0%, #1a0810 100%);
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 20px; padding: 26px 24px;
+    margin-bottom: 16px; text-align: center;
+    box-shadow: 0 8px 32px rgba(107,26,46,0.4), inset 0 1px 0 rgba(200,169,110,0.15);
+    opacity: 0; animation: fadeUp 0.5s 0.65s ease forwards;
+    position: relative; overflow: hidden;
+  }
+  .growth-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,169,110,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .growth-scene {
+    font-size: 62px; display: block; line-height: 1.1;
+    margin-bottom: 4px;
+    transition: font-size 0.4s ease;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
+  .growth-scene.wiggle { animation: wiggle 0.7s ease; }
+
+  .growth-msg {
+    font-family: 'Playfair Display', 'Noto Serif TC', serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--gold-light);
+    margin-top: 10px; min-height: 24px;
+  }
+  .growth-msg.flash { animation: flash 0.5s ease; }
+
+  .growth-stage {
+    margin-top: 6px; font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(200,169,110,0.5);
+  }
+
+  .vine-progress {
+    margin-top: 16px;
+    display: flex; justify-content: center; gap: 6px; align-items: center;
+    flex-wrap: wrap;
+  }
+  .vine-node {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,169,110,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; transition: all 0.4s ease;
+  }
+  .vine-node.done {
+    background: rgba(200,169,110,0.15);
+    border-color: rgba(200,169,110,0.5);
+    box-shadow: 0 0 10px rgba(200,169,110,0.2);
+  }
+  .vine-connector { width: 12px; height: 1px; background: rgba(200,169,110,0.2); flex-shrink: 0; }
+  .vine-connector.done { background: rgba(200,169,110,0.5); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--wine); color: var(--cream);
+    padding: 12px 24px; border-radius: 99px;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    border: 1px solid rgba(200,169,110,0.3);
+    box-shadow: 0 6px 24px rgba(107,26,46,0.5);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+    opacity: 0; z-index: 999; white-space: nowrap; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
   /* ── Total card ── */
   .total-card {
-    background: var(--surface);
+    background: var(--parchment);
     border: 1px solid var(--border);
-    border-radius: 22px; padding: 30px 28px 26px;
-    text-align: center; margin-bottom: 18px;
+    border-radius: 20px; padding: 28px 28px 24px;
+    text-align: center; margin-bottom: 16px;
     position: relative; overflow: hidden;
-    box-shadow: 0 2px 16px rgba(192,57,43,0.08);
+    box-shadow: 0 4px 20px rgba(107,26,46,0.1);
     opacity: 0; animation: fadeUp 0.5s 0.7s ease forwards;
   }
   .total-card::before {
     content: ''; position: absolute; top:0; left:0; right:0; height: 3px;
-    background: linear-gradient(90deg, transparent, var(--red-bright), var(--orange), transparent);
+    background: linear-gradient(90deg, transparent, var(--wine-light), var(--gold), var(--wine-light), transparent);
   }
 
-  .total-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .total-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
 
   .total-amount {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(3rem,11vw,5rem); font-weight: 900;
-    color: var(--red-bright); line-height: 1;
+    font-family: 'Playfair Display', 'Noto Serif TC', serif;
+    font-size: clamp(3rem, 12vw, 5.2rem); font-weight: 900;
+    color: var(--wine); line-height: 1;
+    text-shadow: 0 2px 8px rgba(107,26,46,0.2);
   }
   .total-amount.bump { animation: bump 0.4s ease; }
-  .currency { font-size: 0.38em; vertical-align: super; color: var(--red-light); font-weight: 400; }
+  .currency { font-size: 0.35em; vertical-align: super; color: var(--wine-light); font-weight: 700; }
 
   .donor-count { margin-top: 10px; font-size: 13px; color: var(--text-muted); }
-  .donor-count b { color: var(--red-light); }
+  .donor-count b { color: var(--wine-light); }
+
+  .goal-wrap { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-light); }
+  .goal-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 9px; }
+  .goal-meta b { color: var(--wine); font-family: 'Playfair Display', serif; }
+
+  .track {
+    height: 10px; background: var(--cream2); border-radius: 99px;
+    overflow: hidden; border: 1px solid var(--border-light);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--wine), var(--wine-mid), var(--rose));
+    border-radius: 99px; width: 0%;
+    transition: width 1s cubic-bezier(0.34,1.1,0.64,1);
+    position: relative;
+  }
+  .fill::after {
+    content: '🍷';
+    position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+    font-size: 14px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .goal-done {
+    margin-top: 12px; font-size: 13px; color: var(--wine);
+    display: none; font-weight: 500;
+    font-family: 'Playfair Display', serif; font-style: italic;
+  }
 
   /* ── Input card ── */
   .input-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 22px; padding: 24px 22px; margin-bottom: 18px;
-    box-shadow: 0 2px 12px rgba(192,57,43,0.06);
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 24px 22px; margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(107,26,46,0.08);
     opacity: 0; animation: fadeUp 0.5s 0.8s ease forwards;
-    position: relative;
   }
-  .section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+
+  .section-label {
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before,
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
 
   .row { display: flex; gap: 12px; margin-bottom: 14px; }
-  .field { flex: 1; display: flex; flex-direction: column; gap: 6px; position: relative; }
-  label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .field { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
   input, select {
-    background: var(--surface2); border: 1.5px solid var(--border);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
     border-radius: 10px; padding: 12px 14px; color: var(--text);
     font-family: 'Noto Sans TC', sans-serif; font-size: 15px;
     outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
     -webkit-appearance: none; appearance: none;
   }
   input:focus, select:focus {
-    border-color: var(--red-bright);
-    box-shadow: 0 0 0 3px rgba(224,80,64,0.12);
+    border-color: var(--wine-light);
+    box-shadow: 0 0 0 3px rgba(107,26,46,0.1);
   }
   input::placeholder { color: var(--text-muted); }
   input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  select {
-    background: var(--surface2); border: 1.5px solid var(--border);
-    border-radius: 10px; padding: 12px 14px; color: var(--text);
-    font-family: 'Noto Sans TC', sans-serif; font-size: 15px;
-    outline: none; width: 100%; cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  select:focus {
-    border-color: var(--red-bright);
-    box-shadow: 0 0 0 3px rgba(224,80,64,0.12);
-  }
-
   .submit-btn {
     width: 100%; padding: 15px; border: none; border-radius: 12px;
-    background: linear-gradient(135deg, var(--red-dark), var(--red-bright) 60%, var(--orange));
-    color: #fff; font-family: 'Noto Sans TC', sans-serif;
-    font-size: 15px; font-weight: 500; letter-spacing: 1px; cursor: pointer;
+    background: linear-gradient(135deg, var(--wine) 0%, var(--wine-mid) 50%, var(--rose) 100%);
+    color: var(--cream); font-family: 'Noto Sans TC', sans-serif;
+    font-size: 15px; font-weight: 500; letter-spacing: 2px; cursor: pointer;
     transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(192,57,43,0.25);
+    box-shadow: 0 4px 18px rgba(107,26,46,0.35);
+    border: 1px solid rgba(200,169,110,0.2);
   }
-  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(192,57,43,0.35); }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(107,26,46,0.45); }
   .submit-btn:active { transform: translateY(0); }
   .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
   /* ── Tabs ── */
   .tabs {
-    display: flex; gap: 0; margin-bottom: 16px;
-    background: var(--surface2); border-radius: 12px; padding: 4px;
+    display: flex; gap: 0; margin-bottom: 14px;
+    background: var(--cream2); border-radius: 12px; padding: 4px;
     border: 1px solid var(--border);
     opacity: 0; animation: fadeUp 0.5s 0.9s ease forwards;
   }
@@ -157,124 +283,107 @@
     transition: all 0.2s; font-weight: 500;
   }
   .tab-btn.active {
-    background: var(--surface); color: var(--red-bright);
-    box-shadow: 0 1px 6px rgba(192,57,43,0.12);
+    background: var(--parchment); color: var(--wine);
+    box-shadow: 0 1px 6px rgba(107,26,46,0.15);
   }
 
-  /* ── Feed (each transaction) ── */
+  /* ── Feed ── */
   .panel { display: none; }
   .panel.active { display: flex; flex-direction: column; gap: 10px; }
 
   .feed-item {
-    background: var(--surface); border: 1.5px solid var(--border);
+    background: var(--parchment); border: 1px solid var(--border);
     border-radius: 14px; padding: 14px 16px;
     display: flex; align-items: center; justify-content: space-between;
     animation: slideIn 0.35s ease;
-    box-shadow: 0 1px 6px rgba(192,57,43,0.05);
+    box-shadow: 0 2px 8px rgba(107,26,46,0.06);
   }
-
   .feed-left { display: flex; align-items: center; gap: 12px; }
   .avatar {
     width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 700; flex-shrink: 0;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
     font-family: 'Noto Serif TC', serif;
+    border: 1px solid rgba(107,26,46,0.15);
   }
   .feed-name { font-size: 14px; font-weight: 500; color: var(--text); }
   .feed-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .feed-amt { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; color: var(--red-bright); }
+  .feed-amt { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--wine); }
 
   /* ── Donor summary ── */
   .donor-item {
-    background: var(--surface); border: 1.5px solid var(--border);
+    background: var(--parchment); border: 1px solid var(--border);
     border-radius: 14px; padding: 14px 16px 12px;
     display: flex; flex-direction: column; gap: 10px;
-    box-shadow: 0 1px 6px rgba(192,57,43,0.05);
+    box-shadow: 0 2px 8px rgba(107,26,46,0.06);
     animation: slideIn 0.35s ease;
   }
   .donor-top { display: flex; align-items: center; justify-content: space-between; }
   .donor-left { display: flex; align-items: center; gap: 12px; }
   .donor-name { font-size: 14px; font-weight: 500; color: var(--text); }
-  .donor-times { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .donor-right { text-align: right; }
-  .donor-total { font-family: 'Noto Serif TC', serif; font-size: 18px; font-weight: 700; color: var(--red-bright); }
+  .donor-total { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--wine); }
   .donor-pct { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-  /* Donor detail expand */
   .donor-detail {
-    display: none; margin-top: 10px;
-    border-top: 1px solid var(--border); padding-top: 10px;
-    flex-direction: column; gap: 6px;
+    display: none; margin-top: 8px;
+    border-top: 1px solid var(--border-light); padding-top: 10px;
+    flex-direction: column; gap: 4px;
   }
   .donor-detail.open { display: flex; }
   .donor-detail-item {
     display: flex; justify-content: space-between; align-items: center;
-    font-size: 13px; padding: 6px 4px;
-    border-bottom: 1px solid var(--bg2);
-    color: var(--text-mid);
+    font-size: 12px; padding: 5px 4px;
+    border-bottom: 1px solid var(--cream2); color: var(--text-mid);
   }
   .donor-detail-item:last-child { border-bottom: none; }
   .donor-detail-time { color: var(--text-muted); font-size: 11px; }
-  .donor-detail-amt { font-weight: 600; color: var(--red-bright); font-size: 13px; }
+  .donor-detail-amt { font-weight: 600; color: var(--wine-light); font-size: 13px; }
 
   .expand-btn {
     background: none; border: none; cursor: pointer;
     font-size: 11px; color: var(--text-muted); padding: 0;
     display: flex; align-items: center; gap: 4px;
-    font-family: 'Noto Sans TC', sans-serif;
-    transition: color 0.15s;
+    font-family: 'Noto Sans TC', sans-serif; transition: color 0.15s;
   }
-  .expand-btn:hover { color: var(--red-bright); }
+  .expand-btn:hover { color: var(--wine); }
   .expand-arrow { transition: transform 0.2s; display: inline-block; }
   .expand-btn.open .expand-arrow { transform: rotate(180deg); }
-  .bar-wrap { width: 100%; height: 6px; background: var(--bg2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
-  .bar-fill {
-    height: 100%; border-radius: 99px;
-    width: 0%;
-    transition: width 0.9s cubic-bezier(0.34,1.1,0.64,1);
-  }
 
-  .empty { text-align: center; padding: 36px 0; color: var(--text-muted); font-size: 14px; line-height: 2.2; }
+  .bar-wrap { width: 100%; height: 5px; background: var(--cream2); border-radius: 99px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 99px; width: 0%; transition: width 0.9s cubic-bezier(0.34,1.1,0.64,1); }
+
+  .empty { text-align: center; padding: 36px 0; color: var(--text-muted); font-size: 14px; line-height: 2.4; }
 
   .live-row {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     opacity: 0; animation: fadeUp 0.5s 0.85s ease forwards;
   }
-  .feed-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
-  .live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #16a34a; letter-spacing: 1px; }
+  .feed-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+  .live { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #16a34a; letter-spacing: 1px; }
   .live::before {
     content: ''; width: 6px; height: 6px; border-radius: 50%;
     background: #16a34a; box-shadow: 0 0 6px #16a34a; animation: blink 2s infinite;
   }
 
-  /* Status */
   .status {
-    margin-top: 18px; padding: 11px 16px; border-radius: 10px;
-    font-size: 12px; text-align: center; line-height: 1.6;
+    margin-top: 16px; padding: 10px 16px; border-radius: 10px;
+    font-size: 11px; text-align: center; line-height: 1.6;
     background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.2);
     color: #16a34a; opacity: 0; animation: fadeUp 0.5s 1.1s ease forwards;
   }
-  .status.error { background: rgba(224,80,64,0.06); border-color: rgba(224,80,64,0.2); color: var(--red-bright); }
-  .status.loading { background: var(--surface2); border-color: var(--border); color: var(--text-muted); }
-
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: var(--text); color: #fff;
-    padding: 12px 22px; border-radius: 99px;
-    font-size: 14px; font-weight: 500;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
-    opacity: 0; z-index: 999; white-space: nowrap;
-    pointer-events: none;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .status.error { background: rgba(107,26,46,0.06); border-color: rgba(107,26,46,0.2); color: var(--wine); }
+  .status.loading { background: var(--cream2); border-color: var(--border); color: var(--text-muted); }
 
   /* ── Animations ── */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(14px); }
     to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes dropIn {
+    from { opacity:0; transform:translateY(-24px) scale(0.5); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
   }
   @keyframes slideIn {
     from { opacity:0; transform:translateX(-8px); }
@@ -285,6 +394,19 @@
     40% { transform:scale(1.08); }
     100%{ transform:scale(1); }
   }
+  @keyframes wiggle {
+    0%  { transform:rotate(0deg) scale(1); }
+    20% { transform:rotate(-10deg) scale(1.12); }
+    40% { transform:rotate(10deg) scale(1.18); }
+    60% { transform:rotate(-7deg) scale(1.12); }
+    80% { transform:rotate(5deg) scale(1.06); }
+    100%{ transform:rotate(0deg) scale(1); }
+  }
+  @keyframes flash {
+    0%  { opacity:0; transform:scale(0.85); }
+    60% { opacity:1; transform:scale(1.05); }
+    100%{ opacity:1; transform:scale(1); }
+  }
   @keyframes blink {
     0%,100%{ opacity:1; } 50%{ opacity:0.2; }
   }
@@ -294,9 +416,23 @@
 <div class="container">
 
   <header>
+    <span class="wine-icon">🍷</span>
     <p class="eyebrow">集資贊助計畫</p>
     <h1>黑菲特家族<em>台中場</em></h1>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <span class="ornament-dot">🍇</span>
+      <div class="ornament-line r"></div>
+    </div>
   </header>
+
+  <!-- 葡萄成長卡 -->
+  <div class="growth-card">
+    <span class="growth-scene" id="growthScene">🌱</span>
+    <div class="growth-msg" id="growthMsg">葡萄藤剛種下，靜待春風...</div>
+    <div class="growth-stage" id="growthStage">STAGE 0 / 6</div>
+    <div class="vine-progress" id="vineProgress"></div>
+  </div>
 
   <!-- 累計金額 -->
   <div class="total-card">
@@ -305,6 +441,14 @@
       <span class="currency">NT$</span><span id="amountNum">0</span>
     </div>
     <div class="donor-count">共 <b id="donorCount">0</b> 位贊助者加入</div>
+    <div class="goal-wrap">
+      <div class="goal-meta">
+        <span>釀酒進度</span>
+        <b id="goalPct">0% ／ NT$88,888</b>
+      </div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="goal-done" id="goalDone">🍷 開瓶！感謝所有人的澆灌，美酒已就位！</div>
+    </div>
   </div>
 
   <!-- 輸入 -->
@@ -312,14 +456,14 @@
     <div class="section-label">加入贊助</div>
     <div class="row" style="margin-bottom: 14px;">
       <div class="field">
-        <label>你的名字</label>
+        <label>黑菲特家族群的名字</label>
         <select id="nameSelect" onchange="onSelectName()">
           <option value="">── 請選擇 ──</option>
         </select>
       </div>
       <div class="field">
-        <label>請打群裡的名字</label>
-        <input type="text" id="nameInput" placeholder="黑菲特家族群名字" maxlength="20" autocomplete="off">
+        <label>手動輸入</label>
+        <input type="text" id="nameInput" placeholder="" maxlength="20" autocomplete="off">
       </div>
     </div>
     <div class="row" style="margin-bottom: 14px;">
@@ -328,7 +472,7 @@
         <input type="number" id="amountInput" placeholder="輸入金額" min="1">
       </div>
     </div>
-    <button class="submit-btn" id="submitBtn" onclick="addDonation()">💰 贊助</button>
+    <button class="submit-btn" id="submitBtn" onclick="addDonation()">🍇 澆水贊助</button>
   </div>
 
   <!-- 紀錄分頁 -->
@@ -342,30 +486,24 @@
     <button class="tab-btn" id="tab-summary" onclick="switchTab('summary')">👤 個人累計</button>
   </div>
 
-  <!-- 每筆紀錄 -->
   <div class="panel active" id="panel-log">
     <div class="empty">⏳ 連線中...</div>
   </div>
-
-  <!-- 個人累計 -->
   <div class="panel" id="panel-summary">
     <div class="empty">⏳ 連線中...</div>
   </div>
 
   <div class="status loading" id="status">🔌 正在連接 Firebase 即時資料庫...</div>
-
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, push, onValue, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ⚠️ 請替換為你的新 Firebase 專案設定
+  // ⚠️ 請替換為你的 Firebase 專案設定
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -376,38 +514,92 @@
     appId: "YOUR_APP_ID"
   };
 
+  const GOAL = 88888;
+
+  const STAGES = [
+    { min: 0,     scene: '🌱',  msg: '葡萄藤剛種下，靜待春風...' },
+    { min: 10000, scene: '🌿',  msg: '嫩芽冒出來了，繼續灌溉！' },
+    { min: 25000, scene: '🍃',  msg: '葉片茂盛，藤蔓開始攀爬！' },
+    { min: 45000, scene: '🍇',  msg: '葡萄串結果了，香氣四溢！' },
+    { min: 65000, scene: '🍇✨', msg: '葡萄熟透，準備採收！' },
+    { min: 80000, scene: '🫗',  msg: '正在釀造中，美酒即將誕生...' },
+    { min: 88888, scene: '🍷',  msg: '🎊 美酒開瓶！乾杯！' },
+  ];
+  const VINE_EMOJIS = ['🌱','🌿','🍃','🍇','✨','🫗','🍷'];
+
   const COLORS = [
-    ['#fde8e4','#c0392b'], ['#fef0e4','#c0700a'], ['#e4f5f0','#1a7a6e'],
-    ['#ede4f5','#6b2fad'], ['#e4eef5','#1a5fad'], ['#f5f0e4','#8a6a0a'],
+    ['#f5e8e8','#8b2440'], ['#f0e8f5','#6b2fad'], ['#e8f0f5','#1a5fad'],
+    ['#f5f0e8','#8a6a0a'], ['#e8f5ee','#1a6a3e'], ['#f5eae8','#7a3020'],
   ];
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const donationsRef = ref(db, 'donations');
 
+  let prevDonationCount = 0;
+  let prevTotal = 0;
+
+  function getStageIdx(total) {
+    let idx = 0;
+    for (let i = 0; i < STAGES.length; i++) {
+      if (total >= STAGES[i].min) idx = i;
+    }
+    return idx;
+  }
+
+  function updateGrowth(total, donationCount) {
+    const idx = getStageIdx(total);
+    const stage = STAGES[idx];
+    const sceneEl = document.getElementById('growthScene');
+    const msgEl   = document.getElementById('growthMsg');
+    const stageEl = document.getElementById('growthStage');
+
+    sceneEl.textContent = stage.scene;
+    sceneEl.style.fontSize = (62 + idx * 6) + 'px';
+    msgEl.textContent = stage.msg;
+    stageEl.textContent = `STAGE ${idx} / ${STAGES.length - 1}`;
+
+    const vp = document.getElementById('vineProgress');
+    vp.innerHTML = '';
+    STAGES.forEach((s, i) => {
+      if (i > 0) {
+        const conn = document.createElement('div');
+        conn.className = 'vine-connector' + (i <= idx ? ' done' : '');
+        vp.appendChild(conn);
+      }
+      const node = document.createElement('div');
+      node.className = 'vine-node' + (i <= idx ? ' done' : '');
+      node.textContent = VINE_EMOJIS[i];
+      vp.appendChild(node);
+    });
+
+    if (donationCount > prevDonationCount && prevDonationCount > 0) {
+      sceneEl.classList.remove('wiggle');
+      msgEl.classList.remove('flash');
+      void sceneEl.offsetWidth;
+      sceneEl.classList.add('wiggle');
+      msgEl.classList.add('flash');
+      showToast('🍇 ' + stage.msg);
+    }
+    prevDonationCount = donationCount;
+  }
+
   function showToast(msg) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
     toast.classList.add('show');
     clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 3500);
   }
 
-  let prevTotal = 0;
-  let allDonors = [];
-
-  // 即時監聽
   onValue(donationsRef, (snapshot) => {
     const data = snapshot.val();
     const donations = data
-      ? Object.entries(data)
-          .map(([id, d]) => ({ id, ...d }))
-          .sort((a, b) => b.timestamp - a.timestamp)
+      ? Object.entries(data).map(([id, d]) => ({ id, ...d })).sort((a,b) => b.timestamp - a.timestamp)
       : [];
 
     const total = donations.reduce((s, d) => s + d.amount, 0);
 
-    // 個人累計
     const summaryMap = {};
     donations.forEach(d => {
       if (!summaryMap[d.name]) summaryMap[d.name] = { total: 0, count: 0 };
@@ -416,14 +608,13 @@
     });
     const summary = Object.entries(summaryMap)
       .map(([name, v]) => ({ name, ...v }))
-      .sort((a, b) => b.total - a.total);
+      .sort((a,b) => b.total - a.total);
 
-    allDonors = summary.map(s => s.name);
-    updateDatalist(allDonors);
-
+    updateDatalist(summary.map(s => s.name));
     renderTotal(total, Object.keys(summaryMap).length, prevTotal);
     renderLog(donations);
     renderSummary(summary, donations, total);
+    updateGrowth(total, donations.length);
     prevTotal = total;
 
     document.getElementById('status').className = 'status';
@@ -433,29 +624,23 @@
     document.getElementById('status').textContent = '❌ 連線失敗：' + error.message;
   });
 
-  // 送出贊助
   window.addDonation = async function() {
     const name = document.getElementById('nameInput').value.trim();
     const amount = parseInt(document.getElementById('amountInput').value);
-    if (!name)             { shake('nameInput');   return; }
+    if (!name)   { shake('nameInput');   return; }
     if (!amount || amount < 1) { shake('amountInput'); return; }
 
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = '送出中...';
-
+    btn.disabled = true; btn.textContent = '送出中...';
     try {
       await push(donationsRef, { name, amount, timestamp: serverTimestamp() });
       document.getElementById('nameInput').value = '';
       document.getElementById('amountInput').value = '';
       document.getElementById('nameSelect').value = '';
-      document.getElementById('nameInput').focus();
-      showToast('✅ 贊助成功，感謝你的支持！');
     } catch (e) {
       alert('送出失敗：' + e.message);
     } finally {
-      btn.disabled = false;
-      btn.textContent = '💰 贊助';
+      btn.disabled = false; btn.textContent = '🍇 澆水贊助';
     }
   };
 
@@ -468,15 +653,13 @@
 
   function updateDatalist(donors) {
     const sel = document.getElementById('nameSelect');
-    const current = sel.value;
+    const cur = sel.value;
     sel.innerHTML = '<option value="">── 選擇曾贊助的名字 ──</option>';
     donors.forEach(name => {
       const opt = document.createElement('option');
-      opt.value = name;
-      opt.textContent = name;
-      sel.appendChild(opt);
+      opt.value = name; opt.textContent = name; sel.appendChild(opt);
     });
-    if (current) sel.value = current;
+    if (cur) sel.value = cur;
   }
 
   window.onSelectName = function() {
@@ -491,16 +674,13 @@
     if (e.key === 'Enter') window.addDonation();
   });
 
-  // ── Render functions ──
-
   function renderTotal(total, uniqueDonors, prev) {
     const numEl = document.getElementById('amountNum');
-    const start = prev;
     const t0 = performance.now();
     (function tick(now) {
-      const p = Math.min((now - t0) / 700, 1);
+      const p = Math.min((now - t0) / 800, 1);
       const e = 1 - Math.pow(1 - p, 3);
-      numEl.textContent = Math.round(start + (total - start) * e).toLocaleString();
+      numEl.textContent = Math.round(prev + (total - prev) * e).toLocaleString();
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
 
@@ -508,21 +688,23 @@
       const el = document.getElementById('totalEl');
       el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
     }
-
     document.getElementById('donorCount').textContent = uniqueDonors;
+
+    const pct = Math.min(total / GOAL * 100, 100);
+    document.getElementById('fill').style.width = pct + '%';
+    document.getElementById('goalPct').textContent = Math.floor(pct) + '% ／ NT$' + GOAL.toLocaleString();
+    document.getElementById('goalDone').style.display = total >= GOAL ? 'block' : 'none';
   }
 
   function renderLog(donations) {
     const panel = document.getElementById('panel-log');
     panel.innerHTML = '';
-
     if (!donations.length) {
-      panel.innerHTML = '<div class="empty">💰 還沒有人贊助<br>成為第一位贊助者吧！</div>';
+      panel.innerHTML = '<div class="empty">🌱 還沒有人澆水<br>成為第一位贊助者吧！</div>';
       return;
     }
-
-    donations.forEach((d) => {
-      const c = COLORS[(d.name || '?').charCodeAt(0) % COLORS.length];
+    donations.forEach(d => {
+      const c = COLORS[d.name.charCodeAt(0) % COLORS.length];
       const time = d.timestamp
         ? new Date(d.timestamp).toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
         : '--';
@@ -536,8 +718,7 @@
             <div class="feed-time">${time}</div>
           </div>
         </div>
-        <div class="feed-amt">NT$ ${Number(d.amount).toLocaleString()}</div>
-      `;
+        <div class="feed-amt">NT$ ${Number(d.amount).toLocaleString()}</div>`;
       panel.appendChild(el);
     });
   }
@@ -545,14 +726,11 @@
   function renderSummary(summary, allDonations, grandTotal) {
     const panel = document.getElementById('panel-summary');
     panel.innerHTML = '';
-
     if (!summary.length) {
-      panel.innerHTML = '<div class="empty">💰 還沒有贊助紀錄</div>';
+      panel.innerHTML = '<div class="empty">🍇 還沒有贊助紀錄</div>';
       return;
     }
-
-    const barColors = ['#e05040','#d4692a','#c08020','#2a8060','#4060c0','#8040a0'];
-
+    const barColors = ['#8b2440','#6b2fad','#c08020','#2a8060','#4060c0','#7a3020'];
     const detailMap = {};
     allDonations.forEach(d => {
       if (!detailMap[d.name]) detailMap[d.name] = [];
@@ -570,11 +748,10 @@
         const time = d.timestamp
           ? new Date(d.timestamp).toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
           : '--';
-        return `
-          <div class="donor-detail-item">
-            <span class="donor-detail-time">${time}</span>
-            <span class="donor-detail-amt">NT$ ${Number(d.amount).toLocaleString()}</span>
-          </div>`;
+        return `<div class="donor-detail-item">
+          <span class="donor-detail-time">${time}</span>
+          <span class="donor-detail-amt">NT$ ${Number(d.amount).toLocaleString()}</span>
+        </div>`;
       }).join('');
 
       const el = document.createElement('div');
@@ -598,10 +775,7 @@
         <div class="bar-wrap">
           <div class="bar-fill" style="background:${barColor}" data-width="${barPct}"></div>
         </div>
-        <div class="donor-detail" id="detail-${i}">
-          ${detailRows}
-        </div>
-      `;
+        <div class="donor-detail" id="detail-${i}">${detailRows}</div>`;
       panel.appendChild(el);
     });
 
@@ -622,8 +796,8 @@
 
   function shake(id) {
     const el = document.getElementById(id);
-    el.style.borderColor = '#e74c3c';
-    el.style.boxShadow = '0 0 0 3px rgba(224,80,64,0.2)';
+    el.style.borderColor = '#8b2440';
+    el.style.boxShadow = '0 0 0 3px rgba(107,26,46,0.18)';
     setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 800);
   }
 
