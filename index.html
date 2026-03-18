@@ -834,49 +834,106 @@
     const dateStr = now.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
     const timeStr = now.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit' });
     const grandTotal = _summary.reduce((s, d) => s + d.total, 0);
+
+    // 依時間正序排列明細
+    const sorted = [..._allDonations].sort((a, b) => a.timestamp - b.timestamp);
+
+    // ── 左側：活動資訊（A欄）+ 個人對帳表（D~J欄）+ 每筆明細（L~P欄）並排 ──
+    // 以 row 陣列代表每一列，每列 16 個 cell（A~P）
+    // A~B: 活動資訊  D~J: 個人對帳  L~P: 每筆明細
+    // 欄位索引：A=0,B=1,C=2,D=3,E=4,F=5,G=6,H=7,I=8,J=9,K=10,L=11,M=12,N=13,O=14,P=15
+
+    const COLS = 16;
+    const blank = () => Array(COLS).fill('');
+
+    const leftInfo = [
+      ['黑菲特家族台中場 贊助對帳表', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['匯出時間', dateStr + ' ' + timeStr],
+      ['贊助人數', _summary.length + ' 人'],
+      ['累計總額', 'NT$' + grandTotal.toLocaleString()],
+      ['目標金額', 'NT$88,888'],
+      ['達標進度', (Math.min(grandTotal / 88888 * 100, 100)).toFixed(2) + '%'],
+    ];
+
+    // 個人對帳表標題列（D~J）
+    const summaryHeader = ['#', '贊助者', '贊助次數', '贊助加總（NT$）', '已匯款', '匯款後5碼', '備註'];
+    // 每筆明細標題列（L~P）
+    const detailHeader  = ['#', '贊助者', '金額（NT$）', '日期', '時間'];
+
+    // 計算最多幾列（取個人表跟明細表的較大值）
+    const summaryRows = _summary.length + 1; // +1 合計列
+    const detailRows  = sorted.length;
+    const maxDataRows = Math.max(summaryRows, detailRows);
+
+    // 建立整張表
     const rows = [];
 
-    // ════════════════════════════════
-    // 區塊一：活動資訊
-    // ════════════════════════════════
-    rows.push(['黑菲特家族台中場　贊助對帳表']);
-    rows.push(['匯出時間', dateStr + ' ' + timeStr]);
-    rows.push(['贊助人數', _summary.length + ' 人']);
-    rows.push(['累計總額', 'NT$ ' + grandTotal.toLocaleString()]);
-    rows.push(['目標金額', 'NT$ 88,888']);
-    rows.push(['達標進度', (Math.min(grandTotal / 88888 * 100, 100)).toFixed(1) + '%']);
-    rows.push([]);
+    // Row 1: 標題
+    const r1 = blank();
+    r1[0] = '黑菲特家族台中場 贊助對帳表';
+    r1[3] = '【個人對帳表】';
+    r1[11] = '【每筆贊助明細】';
+    rows.push(r1);
 
-    // ════════════════════════════════
-    // 區塊二：個人對帳表（主要對帳用）
-    // ════════════════════════════════
-    rows.push(['【個人對帳表】']);
-    rows.push(['#', '贊助者', '贊助次數', '贊助加總（NT$）', '已匯款', '匯款後5碼', '備註']);
+    // Row 2: 匯出時間 | 個人表header | 明細header
+    const r2 = blank();
+    r2[0] = '匯出時間'; r2[1] = dateStr + ' ' + timeStr;
+    summaryHeader.forEach((h, i) => r2[3 + i] = h);
+    detailHeader.forEach((h, i)  => r2[11 + i] = h);
+    rows.push(r2);
 
-    _summary.forEach((s, i) => {
-      rows.push([i + 1, s.name, s.count, s.total, '', '', '']);
-    });
+    // Row 3~6: 活動資訊 | 個人資料 | 明細資料
+    const infoLabels = [
+      ['贊助人數', _summary.length + ' 人'],
+      ['累計總額', 'NT$' + grandTotal.toLocaleString()],
+      ['目標金額', 'NT$88,888'],
+      ['達標進度', (Math.min(grandTotal / 88888 * 100, 100)).toFixed(2) + '%'],
+    ];
 
-    // 合計列
-    rows.push(['', '合計', _allDonations.length + ' 筆', grandTotal, '', '', '']);
-    rows.push([]);
+    for (let i = 0; i < maxDataRows; i++) {
+      const r = blank();
 
-    // ════════════════════════════════
-    // 區塊三：每筆明細（依時間排序）
-    // ════════════════════════════════
-    rows.push(['【每筆贊助明細】']);
-    rows.push(['#', '贊助者', '金額（NT$）', '日期', '時間']);
-
-    const sorted = [..._allDonations].sort((a, b) => a.timestamp - b.timestamp);
-    sorted.forEach((d, i) => {
-      let dateCol = '--', timeCol = '--';
-      if (d.timestamp) {
-        const dt = new Date(d.timestamp);
-        dateCol = dt.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
-        timeCol = dt.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit' });
+      // 左側活動資訊（前4筆）
+      if (i < infoLabels.length) {
+        r[0] = infoLabels[i][0];
+        r[1] = infoLabels[i][1];
       }
-      rows.push([i + 1, d.name, d.amount, dateCol, timeCol]);
-    });
+
+      // 個人對帳表資料
+      if (i < _summary.length) {
+        const s = _summary[i];
+        r[3] = i + 1;
+        r[4] = s.name;
+        r[5] = s.count;
+        r[6] = s.total;
+        r[7] = '';   // 已匯款（空白讓對帳者填）
+        r[8] = '';   // 匯款後5碼
+        r[9] = '';   // 備註
+      } else if (i === _summary.length) {
+        // 合計列
+        r[4] = '合計';
+        r[5] = _allDonations.length + ' 筆';
+        r[6] = grandTotal;
+      }
+
+      // 每筆明細資料
+      if (i < sorted.length) {
+        const d = sorted[i];
+        let dateCol = '--', timeCol = '--';
+        if (d.timestamp) {
+          const dt = new Date(d.timestamp);
+          dateCol = dt.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+          timeCol = dt.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit' });
+        }
+        r[11] = i + 1;
+        r[12] = d.name;
+        r[13] = d.amount;
+        r[14] = dateCol;
+        r[15] = timeCol;
+      }
+
+      rows.push(r);
+    }
 
     // 轉 CSV（UTF-8 BOM）
     const BOM = '\uFEFF';
