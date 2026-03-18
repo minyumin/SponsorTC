@@ -430,80 +430,6 @@
     transform: translateY(-1px);
   }
   .excel-btn:active { transform: translateY(0); }
-
-  /* ── Remittance Modal ── */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(30,14,8,0.55);
-    backdrop-filter: blur(3px);
-    z-index: 500; display: none;
-    align-items: center; justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--parchment);
-    border: 1px solid var(--border);
-    border-radius: 20px; padding: 28px 24px;
-    width: 100%; max-width: 520px;
-    max-height: 80vh; overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(30,14,8,0.4);
-    position: relative;
-  }
-  .modal::before {
-    content: ''; position: absolute; top:0; left:0; right:0; height: 3px;
-    border-radius: 20px 20px 0 0;
-    background: linear-gradient(90deg, transparent, var(--wine-light), var(--gold), var(--wine-light), transparent);
-  }
-  .modal-title {
-    font-family: 'Playfair Display', 'Noto Serif TC', serif;
-    font-size: 18px; font-weight: 700; color: var(--wine);
-    margin-bottom: 6px;
-  }
-  .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
-  .modal-table { width: 100%; border-collapse: collapse; }
-  .modal-table th {
-    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--text-muted); padding: 8px 10px;
-    border-bottom: 1.5px solid var(--border);
-    text-align: left; white-space: nowrap;
-  }
-  .modal-table td {
-    padding: 10px 10px; border-bottom: 1px solid var(--border-light);
-    font-size: 14px; color: var(--text); vertical-align: middle;
-  }
-  .modal-table tr:last-child td { border-bottom: none; }
-  .modal-table .amt { font-family: 'Playfair Display', serif; color: var(--wine); font-weight: 700; }
-  .modal-check { width: 18px; height: 18px; accent-color: var(--wine); cursor: pointer; }
-  .modal-code {
-    width: 90px; padding: 6px 8px;
-    border: 1.5px solid var(--border); border-radius: 7px;
-    font-size: 13px; font-family: monospace;
-    background: var(--cream); color: var(--text);
-    outline: none; text-align: center;
-    transition: border-color 0.2s;
-  }
-  .modal-code:focus { border-color: var(--wine-light); }
-  .modal-footer {
-    display: flex; gap: 10px; margin-top: 20px;
-    padding-top: 16px; border-top: 1px solid var(--border-light);
-  }
-  .modal-cancel {
-    flex: 1; padding: 12px; border: 1.5px solid var(--border);
-    border-radius: 10px; background: transparent;
-    color: var(--text-muted); font-family: 'Noto Sans TC', sans-serif;
-    font-size: 14px; cursor: pointer; transition: all 0.2s;
-  }
-  .modal-cancel:hover { border-color: var(--wine-light); color: var(--wine); }
-  .modal-download {
-    flex: 2; padding: 12px; border: none; border-radius: 10px;
-    background: linear-gradient(135deg, var(--wine), var(--wine-mid));
-    color: var(--cream); font-family: 'Noto Sans TC', sans-serif;
-    font-size: 14px; font-weight: 500; cursor: pointer;
-    transition: all 0.2s; letter-spacing: 1px;
-    box-shadow: 0 4px 14px rgba(107,26,46,0.3);
-  }
-  .modal-download:hover { opacity: 0.9; transform: translateY(-1px); }
 </style>
 </head>
 <body>
@@ -589,34 +515,12 @@
 
   <div class="status loading" id="status">🔌 正在連接 Firebase 即時資料庫...</div>
   <!-- Excel 下載按鈕 -->
-  <button class="excel-btn" onclick="openExcelModal()">
+  <button class="excel-btn" onclick="downloadExcel()">
     📊 下載 Excel 報表
   </button>
 
 </div>
 
-<!-- Remittance Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <div class="modal-title">📊 匯款確認 &amp; 下載報表</div>
-    <div class="modal-sub">請先確認匯款狀態，再下載 Excel</div>
-    <table class="modal-table">
-      <thead>
-        <tr>
-          <th>贊助者</th>
-          <th style="text-align:right">贊助總額</th>
-          <th style="text-align:center">已匯款</th>
-          <th>匯款後5碼</th>
-        </tr>
-      </thead>
-      <tbody id="modalTableBody"></tbody>
-    </table>
-    <div class="modal-footer">
-      <button class="modal-cancel" onclick="closeModal()">取消</button>
-      <button class="modal-download" onclick="downloadExcel()">⬇ 下載 Excel</button>
-    </div>
-  </div>
-</div>
 
 <div class="toast" id="toast"></div>
 
@@ -922,77 +826,60 @@
   let _allDonations = [];
   let _summary = [];
 
-  // ── 開啟 Modal ──
-  window.openExcelModal = function() {
-    if (!_summary.length) { showToast('⏳ 資料載入中，請稍後再試'); return; }
-    const tbody = document.getElementById('modalTableBody');
-    tbody.innerHTML = '';
-    _summary.forEach((s, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${esc(s.name)}</td>
-        <td class="amt" style="text-align:right">NT$ ${s.total.toLocaleString()}</td>
-        <td style="text-align:center">
-          <input type="checkbox" class="modal-check" id="chk-${i}">
-        </td>
-        <td>
-          <input type="text" class="modal-code" id="code-${i}"
-            placeholder="12345" maxlength="5"
-            oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('modalOverlay').classList.add('open');
-  };
-
-  window.closeModal = function() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  };
-
-  window.closeModalOutside = function(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  };
-
-  // ── 下載 Excel（純 CSV，Excel 可直接開啟）──
+  // ── 直接下載 Excel（CSV 格式，Excel 可開啟）──
   window.downloadExcel = function() {
-    const dateStr = new Date().toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+    if (!_summary.length) { showToast('⏳ 資料載入中，請稍後再試'); return; }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+    const timeStr = now.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit' });
+    const grandTotal = _summary.reduce((s, d) => s + d.total, 0);
     const rows = [];
 
-    // ── Sheet 1：個人匯總 ──
-    rows.push(['=== 個人贊助匯總 ===']);
-    rows.push(['贊助者', '贊助次數', '贊助加總（NT$）', '已匯款', '匯款後5碼']);
+    // ════════════════════════════════
+    // 區塊一：活動資訊
+    // ════════════════════════════════
+    rows.push(['黑菲特家族台中場　贊助對帳表']);
+    rows.push(['匯出時間', dateStr + ' ' + timeStr]);
+    rows.push(['贊助人數', _summary.length + ' 人']);
+    rows.push(['累計總額', 'NT$ ' + grandTotal.toLocaleString()]);
+    rows.push(['目標金額', 'NT$ 88,888']);
+    rows.push(['達標進度', (Math.min(grandTotal / 88888 * 100, 100)).toFixed(1) + '%']);
+    rows.push([]);
+
+    // ════════════════════════════════
+    // 區塊二：個人對帳表（主要對帳用）
+    // ════════════════════════════════
+    rows.push(['【個人對帳表】']);
+    rows.push(['#', '贊助者', '贊助次數', '贊助加總（NT$）', '已匯款', '匯款後5碼', '備註']);
 
     _summary.forEach((s, i) => {
-      const checked = document.getElementById('chk-' + i)?.checked ? '✓' : '';
-      const code    = document.getElementById('code-' + i)?.value || '';
-      rows.push([s.name, s.count, s.total, checked, code]);
+      rows.push([i + 1, s.name, s.count, s.total, '', '', '']);
     });
 
+    // 合計列
+    rows.push(['', '合計', _allDonations.length + ' 筆', grandTotal, '', '', '']);
     rows.push([]);
-    rows.push(['=== 每筆贊助紀錄 ===']);
-    rows.push(['贊助者', '金額（NT$）', '時間']);
 
-    _allDonations.forEach(d => {
-      const time = d.timestamp
-        ? new Date(d.timestamp).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
-        : '--';
-      rows.push([d.name, d.amount, time]);
+    // ════════════════════════════════
+    // 區塊三：每筆明細（依時間排序）
+    // ════════════════════════════════
+    rows.push(['【每筆贊助明細】']);
+    rows.push(['#', '贊助者', '金額（NT$）', '日期', '時間']);
+
+    const sorted = [..._allDonations].sort((a, b) => a.timestamp - b.timestamp);
+    sorted.forEach((d, i) => {
+      let dateCol = '--', timeCol = '--';
+      if (d.timestamp) {
+        const dt = new Date(d.timestamp);
+        dateCol = dt.toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei' });
+        timeCol = dt.toLocaleTimeString('zh-TW', { timeZone: 'Asia/Taipei', hour: '2-digit', minute: '2-digit' });
+      }
+      rows.push([i + 1, d.name, d.amount, dateCol, timeCol]);
     });
 
-    // 統計列
-    const grandTotal = _summary.reduce((s, d) => s + d.total, 0);
-    const remitted   = _summary.filter((s, i) => document.getElementById('chk-' + i)?.checked)
-                                .reduce((s, d) => s + d.total, 0);
-    rows.push([]);
-    rows.push(['=== 統計 ===']);
-    rows.push(['總贊助金額', grandTotal]);
-    rows.push(['已匯款金額', remitted]);
-    rows.push(['未匯款金額', grandTotal - remitted]);
-    rows.push(['匯出時間', dateStr]);
-
-    // 轉 CSV（UTF-8 BOM 讓 Excel 正確顯示中文）
-    const BOM = '﻿';
+    // 轉 CSV（UTF-8 BOM）
+    const BOM = '\uFEFF';
     const csv = BOM + rows.map(r =>
       r.map(cell => {
         const s = String(cell ?? '');
@@ -1009,7 +896,6 @@
     a.download = '黑菲特家族台中場_' + dateStr.replace(/\//g, '-') + '.csv';
     a.click();
     URL.revokeObjectURL(url);
-    closeModal();
     showToast('✅ 報表下載完成！');
   };
 
